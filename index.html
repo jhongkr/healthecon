@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>헬스케어경제학 · 경제학원론 복습</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;700;900&family=Lora:ital,wght@0,500;0,600;1,500&display=swap');
+
+  :root{
+    --navy:#13294b;
+    --navy-soft:#1f3a64;
+    --cyan:#1f8a9c;
+    --cyan-light:#e6f4f6;
+    --orange:#e07a3f;
+    --orange-soft:#f6e4d6;
+    --ink:#1b2330;
+    --muted:#5a6675;
+    --paper:#f4f1ea;
+    --card:#ffffff;
+    --line:#dfe4ea;
+    --good:#1f7a4d;
+    --good-bg:#e4f3ea;
+    --bad:#b23b3b;
+    --bad-bg:#f8e6e3;
+    --shadow:0 10px 40px -18px rgba(19,41,75,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans KR',sans-serif;
+    background:
+      radial-gradient(circle at 12% -10%, rgba(31,138,156,.10), transparent 40%),
+      radial-gradient(circle at 95% 5%, rgba(224,122,63,.08), transparent 38%),
+      var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== top bar ===== */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,241,234,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar{
+    max-width:920px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{font-size:13px;letter-spacing:.04em;color:var(--cyan);font-weight:700;}
+  .brand b{color:var(--navy);}
+  .progress-track{
+    flex:1;max-width:340px;height:6px;border-radius:99px;
+    background:#dfe0d8;overflow:hidden;
+  }
+  .progress-fill{height:100%;width:20%;border-radius:99px;
+    background:linear-gradient(90deg,var(--cyan),var(--navy));
+    transition:width .5s cubic-bezier(.4,0,.2,1);}
+  .count{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap;}
+  .count b{color:var(--orange);font-size:16px;}
+
+  /* ===== hero ===== */
+  .hero{max-width:920px;margin:0 auto;padding:54px 24px 8px;}
+  .kicker{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--orange);
+    border:1px solid var(--orange);border-radius:99px;padding:5px 14px;margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:'Lora',serif;font-weight:600;
+    font-size:clamp(28px,5vw,42px);line-height:1.2;color:var(--navy);
+    letter-spacing:-.01em;
+  }
+  .hero h1 .ko{font-family:'Noto Sans KR';font-weight:900;}
+  .hero p{margin-top:14px;color:var(--muted);font-size:15.5px;max-width:600px;}
+  .hero .date{font-weight:700;color:var(--cyan);}
+
+  /* ===== quiz container ===== */
+  main{max-width:920px;margin:0 auto;padding:24px 24px 120px;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:20px;
+    box-shadow:var(--shadow);padding:36px 38px 40px;
+    display:none;animation:rise .5s cubic-bezier(.2,.7,.2,1);
+  }
+  .card.active{display:block;}
+  @keyframes rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+
+  .q-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
+  .q-num{
+    font-family:'Lora',serif;font-style:italic;font-weight:600;
+    font-size:40px;color:var(--cyan);line-height:1;flex-shrink:0;
+  }
+  .q-tag{font-size:12px;font-weight:700;color:var(--orange);letter-spacing:.04em;margin-top:4px;}
+  .stem{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:10px;line-height:1.55;}
+
+  .preamble{
+    background:var(--cyan-light);border-left:4px solid var(--cyan);
+    border-radius:0 12px 12px 0;padding:14px 18px;margin:14px 0 20px;
+    font-size:14px;color:#2c4055;line-height:1.7;
+  }
+  .preamble b{color:var(--navy);}
+  .preamble .row{display:block;margin-top:6px;}
+  .preamble .row:first-child{margin-top:0;}
+
+  /* figure */
+  .figure{
+    margin:22px 0 26px;padding:18px;border:1px solid var(--line);
+    border-radius:16px;background:#fbfaf7;
+  }
+  .figure svg{width:100%;height:auto;display:block;}
+  .figcap{
+    text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px;
+    font-style:italic;
+  }
+
+  /* options */
+  .options{display:flex;flex-direction:column;gap:11px;margin-top:8px;}
+  .opt{
+    position:relative;display:flex;gap:14px;align-items:flex-start;
+    border:1.5px solid var(--line);border-radius:14px;
+    padding:15px 18px;cursor:pointer;background:#fff;
+    transition:border-color .2s,background .2s,transform .12s;
+    font-size:15px;line-height:1.6;color:var(--ink);
+  }
+  .opt:hover{border-color:var(--cyan);background:#fafdfd;}
+  .opt:active{transform:scale(.995);}
+  .opt .mark{
+    flex-shrink:0;width:27px;height:27px;border-radius:50%;
+    border:2px solid var(--line);display:grid;place-items:center;
+    font-weight:700;font-size:13px;color:var(--muted);
+    background:#fff;transition:all .2s;margin-top:1px;
+  }
+  .opt .otext{flex:1;}
+  .opt.correct{border-color:var(--good);background:var(--good-bg);}
+  .opt.correct .mark{background:var(--good);border-color:var(--good);color:#fff;}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .opt.wrong .mark{background:var(--bad);border-color:var(--bad);color:#fff;}
+  .opt.dim{opacity:.5;}
+  .opt.locked{cursor:default;}
+  .opt.locked:hover{border-color:inherit;background:inherit;}
+  .opt.correct.locked:hover{border-color:var(--good);background:var(--good-bg);}
+
+  .badge{
+    position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    font-size:12px;font-weight:800;letter-spacing:.05em;padding:3px 10px;border-radius:99px;
+    opacity:0;transition:opacity .25s;
+  }
+  .opt.correct .badge{opacity:1;background:var(--good);color:#fff;}
+  .opt.wrong .badge{opacity:1;background:var(--bad);color:#fff;}
+
+  /* explanation */
+  .explain{
+    margin-top:22px;border-radius:16px;padding:0;overflow:hidden;
+    max-height:0;opacity:0;transition:max-height .5s ease,opacity .4s ease,margin .4s;
+  }
+  .explain.show{max-height:1400px;opacity:1;margin-top:22px;}
+  .explain-inner{
+    background:linear-gradient(180deg,#fbf7f1,#fff);
+    border:1px solid var(--orange-soft);border-left:5px solid var(--orange);
+    border-radius:14px;padding:20px 22px;
+  }
+  .explain h4{
+    font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--orange);margin-bottom:10px;display:flex;align-items:center;gap:8px;
+  }
+  .answer-line{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+  .answer-line span{color:var(--bad);}
+  .explain p{font-size:14.5px;color:#33404f;margin-bottom:10px;}
+  .explain p:last-child{margin-bottom:0;}
+  .explain .pts{font-weight:700;color:var(--cyan);}
+
+  /* nav */
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:30px;gap:14px;
+  }
+  .btn{
+    font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+    border-radius:99px;padding:12px 26px;border:1.5px solid var(--navy);
+    background:var(--navy);color:#fff;transition:all .2s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:hover{background:var(--navy-soft);transform:translateX(2px);}
+  .btn.ghost{background:transparent;color:var(--navy);}
+  .btn.ghost:hover{background:#eef0f4;transform:translateX(-2px);}
+  .btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+  .nav .spacer{flex:1;}
+
+  .hint{font-size:13px;color:var(--muted);font-style:italic;}
+
+  /* finish card */
+  #finish{text-align:center;}
+  #finish .big{
+    font-family:'Lora',serif;font-size:54px;font-weight:600;color:var(--cyan);
+    margin:10px 0;
+  }
+  #finish .score-num{color:var(--orange);}
+  #finish h2{color:var(--navy);font-size:24px;margin-bottom:8px;}
+  #finish p{color:var(--muted);max-width:480px;margin:0 auto 8px;}
+  .restart{margin-top:24px;}
+
+  /* svg helpers */
+  .ax{stroke:#9aa4b1;stroke-width:2;}
+  .axlabel{font:600 13px 'Noto Sans KR';fill:#5a6675;}
+  .curve{fill:none;stroke-width:3;}
+  .dash{stroke-dasharray:5 5;}
+  .ptlabel{font:700 14px 'Lora',serif;fill:var(--ink);}
+  .curvelabel{font:700 14px 'Noto Sans KR';}
+  .dot{stroke:#fff;stroke-width:2;}
+
+  @media(max-width:600px){
+    .card{padding:26px 20px 30px;}
+    .hero{padding-top:38px;}
+    .q-num{font-size:32px;}
+    .bar{padding:12px 16px;}
+    main{padding:18px 16px 100px;}
+    .opt{font-size:14.5px;padding:14px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="brand"><b>헬스케어경제학</b> · 경제학원론 복습</div>
+    <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+    <div class="count"><b id="cur">1</b> / 5</div>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="kicker">2026 · 1학기 · 12-2</span>
+  <h1><span class="ko">완전경쟁</span> vs <span class="ko">독점</span>,<br>왜 독점에서 가격이 높아질까?</h1>
+</section>
+
+<main id="quiz"></main>
+
+<script>
+/* ---------- SVG figures ---------- */
+const FIG = {};
+
+// Q1 — Perfect competition: market + firm
+FIG.pc = `
+<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="완전경쟁 시장과 개별 기업">
+  <text x="180" y="24" text-anchor="middle" class="curvelabel" fill="#13294b">A Market</text>
+  <text x="540" y="24" text-anchor="middle" class="curvelabel" fill="#13294b">A Firm</text>
+  <!-- market axes -->
+  <line x1="60" y1="50" x2="60" y2="250" class="ax"/>
+  <line x1="60" y1="250" x2="320" y2="250" class="ax"/>
+  <text x="40" y="150" class="axlabel" transform="rotate(-90 40 150)">Price</text>
+  <text x="245" y="278" class="axlabel">Quantity</text>
+  <!-- D and S -->
+  <line x1="90" y1="70" x2="290" y2="230" stroke="#13294b" stroke-width="2.5"/>
+  <line x1="90" y1="230" x2="290" y2="70" stroke="#13294b" stroke-width="2.5"/>
+  <text x="92" y="78" class="curvelabel" fill="#13294b">D</text>
+  <text x="278" y="78" class="curvelabel" fill="#13294b">S</text>
+  <line x1="60" y1="150" x2="320" y2="150" class="ax dash"/>
+  <text x="46" y="155" class="axlabel">P</text>
+  <circle cx="190" cy="150" r="6" fill="#1f8a9c" class="dot"/>
+  <text x="178" y="172" class="axlabel" font-size="12">Eq</text>
+  <!-- firm axes -->
+  <line x1="420" y1="50" x2="420" y2="250" class="ax"/>
+  <line x1="420" y1="250" x2="690" y2="250" class="ax"/>
+  <text x="400" y="160" class="axlabel" transform="rotate(-90 400 160)">Price/Cost</text>
+  <text x="600" y="278" class="axlabel">Quantity</text>
+  <!-- MC curve (J shape) -->
+  <path d="M 450 215 Q 500 218 540 175 T 640 75" class="curve" stroke="#e0392f"/>
+  <text x="608" y="70" class="curvelabel" fill="#e0392f">한계비용</text>
+  <!-- P = MR line -->
+  <line x1="420" y1="150" x2="690" y2="150" class="ax dash"/>
+  <circle cx="565" cy="150" r="6" fill="#1f8a9c" class="dot"/>
+  <line x1="565" y1="150" x2="565" y2="250" class="ax dash"/>
+  <text x="572" y="148" class="axlabel" font-size="12.5">P = D = MR</text>
+  <text x="572" y="166" class="axlabel" font-size="11">(MR = 한계수입)</text>
+  <text x="560" y="270" class="axlabel" font-size="12">Q</text>
+</svg>`;
+
+// Q2 — typical firm cost structure
+FIG.cost = `
+<svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="일반 기업 비용 구조">
+  <line x1="80" y1="30" x2="80" y2="320" class="ax"/>
+  <line x1="80" y1="320" x2="680" y2="320" class="ax"/>
+  <text x="50" y="180" class="axlabel" transform="rotate(-90 50 180)">Costs</text>
+  <text x="360" y="350" class="axlabel">Quantity</text>
+  <!-- grid x labels -->
+  ${[0,1,2,3,4,5,6,7,8,9,10,11].map((n,i)=>`<text x="${80+i*50}" y="338" class="axlabel" font-size="11" text-anchor="middle">${n}</text>`).join('')}
+  <!-- fixed cost baseline -->
+  <line x1="80" y1="270" x2="680" y2="270" stroke="#cbd2da" stroke-width="1.5" class="dash"/>
+  <!-- diagonal proportional ref -->
+  <line x1="80" y1="320" x2="640" y2="60" stroke="#cbd2da" stroke-width="1.5" class="dash"/>
+  <!-- total cost curve: starts at FC, rises convex -->
+  <path d="M 80 270 C 180 250, 280 215, 380 175 C 460 142, 540 100, 630 45" class="curve" stroke="#e0392f"/>
+  <text x="600" y="48" class="curvelabel" fill="#e0392f">총비용</text>
+  <!-- average cost (U shape, dark teal) -->
+  <path d="M 130 250 C 180 290, 230 298, 330 296 C 430 294, 530 280, 630 255" class="curve" stroke="#16453f" stroke-width="2.5"/>
+  <text x="636" y="258" class="curvelabel" font-size="13" fill="#16453f">평균비용</text>
+  <!-- marginal cost (pink, dips then rises) -->
+  <path d="M 130 285 C 180 308, 230 312, 330 305 C 430 296, 530 270, 630 230" class="curve" stroke="#e8908a" stroke-width="2.5"/>
+  <text x="636" y="228" class="curvelabel" font-size="13" fill="#e8908a">한계비용</text>
+  <!-- fixed/variable braces -->
+  <text x="92" y="300" class="axlabel" font-size="11" fill="#1f8a9c">고정비용</text>
+  <text x="92" y="150" class="axlabel" font-size="11" fill="#1f8a9c">가변비용</text>
+  <line x1="380" y1="30" x2="380" y2="320" stroke="#16a34a" stroke-width="1.5" class="dash"/>
+  <text x="385" y="44" class="axlabel" font-size="11" fill="#16a34a">Q=6</text>
+</svg>`;
+
+// Q3 — pharma cost structure (high fixed, low constant MC)
+FIG.pharma = `
+<svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="신약 제약사 비용 구조">
+  <!-- left: total cost -->
+  <line x1="70" y1="30" x2="70" y2="270" class="ax"/>
+  <line x1="70" y1="270" x2="340" y2="270" class="ax"/>
+  <text x="48" y="165" class="axlabel" transform="rotate(-90 48 165)">총비용</text>
+  <text x="250" y="296" class="axlabel">생산량</text>
+  <!-- high fixed start, linear rise -->
+  <line x1="70" y1="160" x2="320" y2="60" stroke="#e0392f" stroke-width="3"/>
+  <!-- fixed cost segment -->
+  <line x1="70" y1="270" x2="70" y2="160" stroke="#e0392f" stroke-width="3"/>
+  <circle cx="200" cy="108" r="6" fill="#13294b" class="dot"/>
+  <text x="180" y="50" class="ptlabel" fill="#13294b">TC1</text>
+  <line x1="200" y1="108" x2="200" y2="270" class="ax dash"/>
+  <text x="190" y="288" class="axlabel" font-size="12" fill="#13294b">Q1</text>
+  <line x1="70" y1="270" x2="200" y2="108" stroke="#6a78c8" stroke-width="1.5" class="dash"/>
+  <text x="82" y="215" class="axlabel" font-size="10.5">초기(고정)비용</text>
+  <!-- right: AC declining, MC flat -->
+  <line x1="430" y1="30" x2="430" y2="270" class="ax"/>
+  <line x1="430" y1="270" x2="700" y2="270" class="ax"/>
+  <text x="610" y="296" class="axlabel">생산량</text>
+  <!-- AC: hyperbola declining -->
+  <path d="M 450 55 C 500 150, 560 200, 690 225" class="curve" stroke="#2b6cb0"/>
+  <text x="590" y="170" class="curvelabel" font-size="13" fill="#2b6cb0">평균비용 = 총비용/Q</text>
+  <!-- MC flat low -->
+  <line x1="450" y1="240" x2="690" y2="240" stroke="#16a34a" stroke-width="3"/>
+  <text x="600" y="258" class="curvelabel" font-size="13" fill="#16a34a">한계비용</text>
+</svg>`;
+
+// Q4 — monopoly vs perfect competition comparison
+FIG.mono = `
+<svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="독점과 완전경쟁 비교">
+  <text x="190" y="22" text-anchor="middle" class="curvelabel" fill="#13294b">완전경쟁시장</text>
+  <text x="540" y="22" text-anchor="middle" class="curvelabel" fill="#13294b">독점시장</text>
+  <!-- left perfect comp -->
+  <line x1="60" y1="40" x2="60" y2="270" class="ax"/>
+  <line x1="60" y1="270" x2="330" y2="270" class="ax"/>
+  <text x="42" y="160" class="axlabel" transform="rotate(-90 42 160)">Price</text>
+  <text x="250" y="296" class="axlabel">Quantity</text>
+  <!-- surplus triangles attached to y-axis -->
+  <polygon points="60,70 195,150 60,150" fill="#cfe7ec" opacity=".7"/>
+  <polygon points="60,150 195,150 60,230" fill="#c9cfe3" opacity=".6"/>
+  <!-- D from y-axis (60,70) through Eq(195,150) -->
+  <line x1="60" y1="70" x2="300" y2="212" stroke="#13294b" stroke-width="2.5"/>
+  <!-- S from y-axis (60,230) through Eq(195,150) -->
+  <line x1="60" y1="230" x2="300" y2="88" stroke="#13294b" stroke-width="2.5"/>
+  <text x="66" y="64" class="curvelabel" fill="#13294b">D</text>
+  <text x="290" y="84" class="curvelabel" fill="#13294b">S</text>
+  <circle cx="195" cy="150" r="6" fill="#1f8a9c" class="dot"/>
+  <text x="200" y="144" class="axlabel" font-size="11">Eq</text>
+  <line x1="60" y1="150" x2="195" y2="150" class="ax dash"/>
+  <line x1="195" y1="150" x2="195" y2="270" class="ax dash"/>
+  <text x="46" y="155" class="axlabel">P</text>
+  <text x="188" y="288" class="axlabel" font-size="12">Q</text>
+  <!-- right monopoly -->
+  <line x1="420" y1="40" x2="420" y2="270" class="ax"/>
+  <line x1="420" y1="270" x2="700" y2="270" class="ax"/>
+  <text x="402" y="160" class="axlabel" transform="rotate(-90 402 160)">Price</text>
+  <text x="630" y="296" class="axlabel">Quantity</text>
+  <!-- demand: y-axis (420,60) -> (700,270) -->
+  <line x1="420" y1="60" x2="700" y2="270" stroke="#13294b" stroke-width="2.5"/>
+  <text x="686" y="266" class="curvelabel" fill="#13294b">D</text>
+  <!-- MR: same intercept (420,60), twice steep -> reaches bottom at x=560 -->
+  <line x1="420" y1="60" x2="560" y2="270" stroke="#3a6ea5" stroke-width="2"/>
+  <text x="540" y="266" class="curvelabel" font-size="13" fill="#3a6ea5">MR</text>
+  <!-- MC: rising, (470,225) -> (660,90), curved through key points -->
+  <path d="M 470 225 Q 495 210 511 196 Q 535 178 557 163 Q 610 128 660 90" class="curve" stroke="#e0392f"/>
+  <text x="638" y="92" class="curvelabel" fill="#e0392f">MC</text>
+  <!-- Qmono where MR=MC : x=511, y=196 -->
+  <circle cx="511" cy="196" r="5.5" fill="#444" class="dot"/>
+  <line x1="511" y1="128" x2="511" y2="270" class="ax dash"/>
+  <text x="491" y="288" class="axlabel" font-size="11">Q<tspan font-size="8" dy="3">mono</tspan></text>
+  <!-- Pmono on demand at Qmono: (511,128) -->
+  <circle cx="511" cy="128" r="5.5" fill="#444" class="dot"/>
+  <line x1="420" y1="128" x2="511" y2="128" class="ax dash"/>
+  <text x="424" y="122" class="axlabel" font-size="11">P<tspan font-size="8" dy="3">mono</tspan></text>
+  <!-- Qpc where MC=D : x=557, y=163 -->
+  <circle cx="557" cy="163" r="5.5" fill="#e0392f" class="dot"/>
+  <line x1="557" y1="163" x2="557" y2="270" class="ax dash"/>
+  <text x="542" y="288" class="axlabel" font-size="11">Q<tspan font-size="8" dy="3">pc</tspan></text>
+  <line x1="420" y1="163" x2="557" y2="163" class="ax dash"/>
+  <text x="424" y="176" class="axlabel" font-size="11">P<tspan font-size="8" dy="3">pc</tspan></text>
+  <!-- deadweight loss triangle: Pmono(511,128) Qpc/Ppc(557,163) MRMC(511,196) -->
+  <polygon points="511,128 557,163 511,196" fill="#7fbf7f" opacity=".55"/>
+  <text x="520" y="158" class="axlabel" font-size="10" fill="#2f6b2f">DWL</text>
+</svg>`;
+
+// Q5 — monopoly single price vs perfect price discrimination
+FIG.discrim = `
+<svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="단일가격 독점과 완벽한 가격차별">
+  <text x="190" y="22" text-anchor="middle" class="curvelabel" font-size="13" fill="#1f8a9c">(a) 독점과 단일가격</text>
+  <text x="565" y="22" text-anchor="middle" class="curvelabel" font-size="13" fill="#1f8a9c">(b) 독점과 완벽한 가격차별</text>
+
+  <!-- ========== LEFT (a) ========== -->
+  <line x1="70" y1="45" x2="70" y2="270" class="ax"/>
+  <line x1="70" y1="270" x2="350" y2="270" class="ax"/>
+  <text x="58" y="56" class="axlabel" font-size="12">Price</text>
+  <text x="250" y="296" class="axlabel" font-size="12">Quantity</text>
+
+  <!-- consumer surplus (above Pmono, under D) -->
+  <polygon points="70,70 175,135 70,135" fill="#bcd3ef" opacity=".75"/>
+  <!-- producer surplus rectangle (Pmono down to MC) -->
+  <polygon points="70,135 175,135 175,200 70,200" fill="#c9d3e0" opacity=".8"/>
+  <!-- deadweight loss triangle -->
+  <polygon points="175,135 280,200 175,200" fill="#e9b6b6" opacity=".8"/>
+
+  <!-- demand (70,70)->(340,237) -->
+  <line x1="70" y1="70" x2="340" y2="237" stroke="#1f4e9c" stroke-width="3"/>
+  <text x="318" y="252" class="curvelabel" font-size="12" fill="#1f4e9c">수요</text>
+  <!-- MR (70,70)->(219,255) -->
+  <line x1="70" y1="70" x2="219" y2="255" stroke="#b32d2d" stroke-width="2.3"/>
+  <text x="150" y="252" class="curvelabel" font-size="12" fill="#b32d2d">한계수입</text>
+  <!-- MC flat y=200 -->
+  <line x1="70" y1="200" x2="340" y2="200" stroke="#b32d2d" stroke-width="3"/>
+  <text x="300" y="194" class="curvelabel" font-size="12" fill="#b32d2d">한계비용</text>
+
+  <!-- price/qty guides -->
+  <line x1="70" y1="135" x2="175" y2="135" class="ax dash"/>
+  <line x1="175" y1="135" x2="175" y2="270" class="ax dash"/>
+  <text x="34" y="139" class="axlabel" font-size="10">독점가격</text>
+  <circle cx="175" cy="135" r="4.5" fill="#1a1a1a" class="dot"/>
+  <text x="100" y="120" class="axlabel" font-size="10" fill="#1f4e9c">소비자잉여</text>
+  <text x="92" y="175" class="axlabel" font-size="9.5">생산자잉여</text>
+  <text x="186" y="172" class="axlabel" font-size="9.5" fill="#b32d2d">순손실</text>
+  <text x="150" y="288" class="axlabel" font-size="10">Quantity sold</text>
+
+  <!-- ========== RIGHT (b) ========== -->
+  <line x1="430" y1="45" x2="430" y2="270" class="ax"/>
+  <line x1="430" y1="270" x2="710" y2="270" class="ax"/>
+  <text x="418" y="56" class="axlabel" font-size="12">Price</text>
+  <text x="615" y="296" class="axlabel" font-size="12">Quantity</text>
+
+  <!-- producer surplus = whole triangle under D above MC -->
+  <polygon points="430,70 640,200 430,200" fill="#c9d3e0" opacity=".8"/>
+
+  <!-- demand (430,70)->(700,237) -->
+  <line x1="430" y1="70" x2="700" y2="237" stroke="#1f4e9c" stroke-width="3"/>
+  <text x="678" y="252" class="curvelabel" font-size="12" fill="#1f4e9c">수요</text>
+  <!-- MC flat y=200 -->
+  <line x1="430" y1="200" x2="700" y2="200" stroke="#b32d2d" stroke-width="3"/>
+  <text x="640" y="194" class="curvelabel" font-size="12" fill="#b32d2d">한계비용</text>
+
+  <line x1="640" y1="200" x2="640" y2="270" class="ax dash"/>
+  <circle cx="640" cy="200" r="4.5" fill="#1a1a1a" class="dot"/>
+  <text x="500" y="150" class="axlabel" font-size="10.5">생산자잉여</text>
+  <text x="610" y="288" class="axlabel" font-size="10">Quantity sold</text>
+</svg>`;
+
+/* ---------- Questions data ---------- */
+const QUESTIONS = [
+  {
+    n:1,
+    tag:"한계적 사고와 가격수용자",
+    stem:"경제학에서 합리적 결정은 기본적으로 \"한계적으로\" 이루어진다.",
+    preamble:[
+      "<b>사회 입장:</b> 한 단위 더 생산할 때 추가 비용(한계비용)과 추가 편익(한계편익)을 비교한다. 비용이 크면 줄이고, 편익이 크면 늘린다. 최적 생산량은 <b>사회의 한계비용 = 사회의 한계편익</b>인 지점.",
+      "<b>기업 입장:</b> 한 개 더 생산할 때의 추가 수입과 추가 비용이 일치하는 지점까지 생산할 때 이윤이 극대화된다. <b>기업의 한계비용 = 기업의 한계수입</b>",
+      "▶ 다음 중 가장 적절하지 <b>않은</b> 설명을 고르시오."
+    ],
+    fig:FIG.pc,
+    figcap:"완전경쟁: 시장에서 P가 결정되고, 개별 기업은 그 가격을 그대로 받는다 (P = D = MR).",
+    options:[
+      "완전경쟁시장에서는 추가되는 한 단위에 대해 소비자 가치(한계편익)가 생산자 비용(한계비용)보다 크면 생산이 늘어난다.",
+      "완전경쟁시장에서는 마지막 소비자의 가치와 마지막 생산자의 비용이 일치하는 지점까지 생산되며, 그 지점에서 균형 가격이 형성된다.",
+      "완전경쟁시장에서 개별 기업이 재화를 한 단위 더 팔 때 발생하는 한계수입은 시장 가격과 동일하다.",
+      "완전경쟁시장에서 개별 기업은 자신의 재화의 가격을 결정할 수 있다.",
+      "완전경쟁시장에서 개별 기업은 자신의 한계수입과 한계비용이 일치하는 지점까지 생산한다."
+    ],
+    answer:3,
+    explainTitle:"가격 수용자(price taker)",
+    explainHead:"정답은 <span>4번</span>입니다.",
+    explain:[
+      "완전경쟁시장에서 개별 기업은 <b>가격 수용자</b>입니다. 시장 전체의 수요·공급이 결정한 가격을 그대로 받아들일 뿐, 스스로 가격을 정할 수 없습니다. 시장가격보다 높이면 동일 상품을 파는 수많은 경쟁자에게 소비자를 모두 빼앗기고, 낮출 이유도 없기 때문입니다.",
+      "가격을 스스로 설정할 수 있는 것은 <b>독점·과점 기업</b>의 특징(price setter)입니다.",
+      "특히 3번(MR = P)과 4번(가격 결정 불가)은 같은 '가격 수용자' 개념의 양면입니다. 완전경쟁시장에서 개별 기업은 무수히 많은 기업 중 하나이므로, 자신의 생산량을 늘려도 시장 가격에 영향을 미치지 않습니다. 따라서 10개를 팔 때 발생하는 개당 수익이 1000원이었다면, 100개를 팔 때 발생하는 개당 수익도 1000원입니다. 가격에 영향을 미칠 정도로 많은 재화를 판매한다면, 이 시장은 더 이상 완전경쟁시장이라 보기 어렵습니다."
+    ]
+  },
+  {
+    n:2,
+    tag:"일반 기업의 비용 구조",
+    stem:"전형적인 일반 기업의 생산량 증가에 따른 비용 구조는 아래 그림과 같다. 다음 중 설명이 적절하지 않은 것은?",
+    preamble:null,
+    fig:FIG.cost,
+    figcap:"고정비용 위에 가변비용이 쌓여 총비용이 되고, 한계비용은 처음엔 다소 줄다가 이후 증가한다 (U자형 평균비용).",
+    options:[
+      "생산량이 증가하면, 그때까지 발생한 총비용은 증가하기 마련이다.",
+      "6개 생산 시 평균비용은 그때까지의 총비용(150)을 6으로 나눈 값이며, 한계비용은 5개에서 6개로 늘릴 때 추가된 총비용의 변화분을 의미한다.",
+      "한계비용은 처음에는 다소 감소할 수 있으나, 어느 시점 이후부터는 생산량이 증가할수록 증가한다. 동일한 생산시설에 노동력이 추가 투입되면 한계 생산성이 떨어지기 때문이다.",
+      "평균비용(총비용/Q)은 고정비용의 분산 효과로 처음엔 계속 감소하나, 어느 순간 한계비용이 이를 압도하면 서서히 다시 증가한다.",
+      "고정비용이 매우 크고 한계비용이 거의 없는 경우에도, 전형적인 비용 곡선(예: U자형 평균비용곡선)이 반드시 동일하게 나타난다."
+    ],
+    answer:4,
+    explainTitle:"한계비용이 다르면 평균비용곡선도 달라진다",
+    explainHead:"정답은 <span>5번</span>입니다.",
+    explain:[
+      "고정비용이 크고 한계비용이 거의 없는 경우(바로 <b>신약 제약사</b>의 비용구조)에는 평균비용곡선이 U자형이 아니라 <b>계속 우하향</b>합니다. 한계비용이 0에 가까우면 생산을 늘릴수록 큰 고정비용이 분산되기만 하므로 평균비용이 끝없이 떨어지죠.",
+      "U자형은 한계비용이 어느 시점부터 증가하는 '전형적인 일반 기업'에서 나타나는 형태입니다. 따라서 \"반드시 동일하게 나타난다\"는 서술은 틀렸습니다.",
+      "<span class='pts'>다음 문제(신약 제약사)로 가는 다리</span> — 같은 독점이라도 비용 구조가 다르면 가격·평균비용 곡선이 완전히 달라진다는 점을 기억하세요."
+    ]
+  },
+  {
+    n:3,
+    tag:"신약 제약사의 비용 구조",
+    stem:"아래는 전형적인 신약 개발 제약사(일반 기업과는 다른)의 비용 구조를 보여준다. 이에 대한 설명으로 적절하지 않은 것은?",
+    preamble:null,
+    fig:FIG.pharma,
+    figcap:"R&D로 초기 고정비용이 크고, 한 알 더 만드는 한계비용은 낮고 일정 → 평균비용은 계속 하락.",
+    options:[
+      "일반적으로 R&D 투자로 인해 초기 비용이 높다.",
+      "Q1까지 생산 시 발생하는 총비용은 TC1이고, 이때까지의 평균비용은 TC1을 Q1으로 나눈 값이다.",
+      "총비용 곡선의 기울기가 일정하면, 생산량과 무관하게 한 단위 추가 생산에 소요되는 한계비용도 일정하다.",
+      "생산량이 증가할수록, 초기 비용이 여러 생산량으로 분산되는 효과가 발생하여 평균 비용은 점차 감소한다.",
+      "복제약을 만드는 기업도 이와 마찬가지로 초기 비용이 매우 높다."
+    ],
+    answer:4,
+    explainTitle:"신약 vs 복제약",
+    explainHead:"정답은 <span>5번</span>입니다.",
+    explain:[
+      "복제약(generic)은 신약과 달리 막대한 R&D·임상시험 비용을 다시 들이지 않고, 이미 공개된 물질을 제조하므로 <b>초기 비용이 훨씬 낮습니다.</b> 따라서 \"복제약도 초기 비용이 매우 높다\"는 서술은 틀렸습니다.",
+      "신약은 높은 고정비용 + 낮은 한계비용 구조라서, 특허로 보호받는 동안 <b>높은 가격</b>으로 그 고정비용을 회수합니다. 특허가 만료되어 복제약이 진입하면 한계비용에 가까운 <b>낮은 가격</b>의 경쟁 시장으로 바뀝니다.",
+      "<span class='pts'>이것이 '왜 신약은 비싸고 복제약은 싼가'</span>의 핵심입니다 — 비용 구조와 시장 구조(독점 → 경쟁)가 함께 작동합니다."
+    ]
+  },
+  {
+    n:4,
+    tag:"독점 vs 완전경쟁",
+    stem:"아래는 독점 시장과 완전 경쟁 시장을 비교한 설명이다. 이에 대한 설명으로 적절하지 않은 것은?",
+    preamble:null,
+    fig:FIG.mono,
+    figcap:"독점기업은 MR=MC에서 생산량(Q_mono)을 정하고, 수요곡선이 허용하는 높은 가격(P_mono)을 매긴다. 줄어든 거래량만큼 사중손실(DWL) 발생.",
+    options:[
+      "완전 경쟁 시장에서는 자유롭게 거래될 수 있는 최대치가 거래된다.",
+      "완전 경쟁 시장에서는 거래를 통해 발생할 수 있는 총잉여가 최대가 된다.",
+      "독점 시장에서는 기업이 하나라서, 한 단위 더 팔려면 가격을 인하해야 한다. 개당 1000원에 10개 팔던 상황에서 11개를 팔려면 11번째 소비자의 지불용의(990원)까지 내려야 하고, 11명 모두에게 단일가 990원으로 팔게 된다. 11번째로 990원을 더 벌지만 기존 10개도 개당 10원씩(총 100원) 덜 받으므로, 한계수입은 990원이 아니라 890원이 된다. 따라서 MR 곡선은 수요곡선 D 아래에 위치한다.",
+      "독점 시장에서는 완전 경쟁과 비교 시, 거래량이 줄어드는 반면 가격이 높아진다.",
+      "독점 시장에서는 거래량이 줄어 총잉여도 줄고, 총잉여의 한 요소인 생산자 잉여도 감소한다."
+    ],
+    answer:4,
+    explainTitle:"기업이 독점을 원하는 이유",
+    explainHead:"정답은 <span>5번</span>입니다.",
+    explain:[
+      "독점에서 <b>총잉여(사회 전체)</b>는 사중손실만큼 줄어드는 것이 맞습니다. 그러나 <b>생산자 잉여</b>는 소비자 잉여를 상당 부분 흡수하므로 오히려 <b>증가</b>하는 것이 일반적입니다.",
+      "줄어드는 것은 <b>소비자 잉여</b>와 <b>사회 전체 총잉여</b>이지, 생산자 잉여가 아닙니다. 따라서 \"생산자 잉여도 감소한다\"는 서술은 틀렸습니다.",
+      "<span class='pts'>바로 이 점이 '왜 기업이 독점을 원하는가'</span>의 핵심입니다 — 사회 전체로는 손해지만 생산자(기업)에게는 이득이기 때문이죠."
+    ]
+  },
+  {
+    n:5,
+    tag:"가격차별과 단일가격",
+    stem:"제약회사의 비용 구조가 초기 R&D 비용은 높고, 약을 추가 생산할 때 발생하는 한계비용은 일정하게 낮게 유지되는 구조라고 생각해 보자. 다음 그림을 보며, 이에 대한 설명으로 적절하지 않은 것을 고르시오.",
+    preamble:null,
+    fig:FIG.discrim,
+    figcap:"(a) 단일가격: 거래량이 줄어 순손실 발생. (b) 완벽한 가격차별: 거래량은 완전경쟁 수준까지 늘지만 모든 잉여가 생산자에게 귀속.",
+    options:[
+      "독점 시장에서 단일가격으로 판매할 때, 거래량이 줄어들어 경제적 순손실(deadweight loss)이 발생한다.",
+      "1000원 낼 의향이 있는 소비자에게는 1000원에, 990원을 낼 의향이 있는 소비자에게는 990원에 — 모든 소비자의 지불의사에 맞춰 가격을 완벽하게 차별할 수 있다면, 기업의 한계수입 곡선은 시장의 수요 곡선과 일치하게 된다.",
+      "완벽한 가격차별하에서는 독점 거래량이 완전경쟁시장 거래량 수준으로 늘어나나, 거래를 통해 발생하는 잉여는 모두 생산자에게 귀속된다.",
+      "각 국가의 가격이 다른 나라의 가격에 미치는 영향이 없다 하더라도, 제약사는 지불의사가 낮은 국가에는 낮게·높은 국가에는 높게 가격을 책정하기보다, 단일 가격으로 판매하는 것이 더 유리하다."
+    ],
+    answer:3,
+    explainTitle:"가격차별은 판매자에게 유리하다",
+    explainHead:"정답은 <span>4번</span>입니다.",
+    explain:[
+      "가격차별(국가 간 차등가격)은 단일가격보다 <b>판매자(제약사)에게 더 유리</b>합니다. 지불의사가 높은 국가에는 높게, 낮은 국가에는 낮게 매기면 각 시장의 잉여를 최대한 흡수할 수 있기 때문입니다.",
+      "단일가격은 고가 시장에서 받을 수 있던 부분을 포기하거나(낮추면), 저가 시장을 아예 잃게(높이면) 됩니다.",
+      "특히 \"각 국가의 가격이 서로 영향을 주지 않는다\"는 단서는 차익거래·국제참조가격(IRP) 같은 <b>가격차별을 가로막는 장애물이 없다</b>는 뜻이라, 차별이 더더욱 유리해지는 조건입니다. 따라서 \"단일가격이 더 유리하다\"는 서술은 틀렸습니다."
+    ]
+  }
+];
+
+/* ---------- Render ---------- */
+const quiz = document.getElementById('quiz');
+let current = 0;
+const answered = new Array(QUESTIONS.length).fill(false);
+let score = 0;
+
+QUESTIONS.forEach((q,qi)=>{
+  const card = document.createElement('section');
+  card.className = 'card' + (qi===0?' active':'');
+  card.id = 'q'+qi;
+
+  const pre = q.preamble ? `<div class="preamble">${q.preamble.map(r=>`<span class="row">${r}</span>`).join('')}</div>` : '';
+  const fig = q.fig ? `<div class="figure">${q.fig}${q.figcap?`<div class="figcap">${q.figcap}</div>`:''}</div>` : '';
+
+  const opts = q.options.map((o,oi)=>`
+    <div class="opt" data-q="${qi}" data-o="${oi}">
+      <div class="mark">${oi+1}</div>
+      <div class="otext">${o}</div>
+      <span class="badge"></span>
+    </div>`).join('');
+
+  const expl = `
+    <div class="explain" id="exp${qi}">
+      <div class="explain-inner">
+        <h4>◆ ${q.explainTitle}</h4>
+        <div class="answer-line">${q.explainHead}</div>
+        ${q.explain.map(p=>`<p>${p}</p>`).join('')}
+      </div>
+    </div>`;
+
+  const isLast = qi===QUESTIONS.length-1;
+  const nav = `
+    <div class="nav">
+      <button class="btn ghost" data-prev ${qi===0?'disabled':''}>← 이전</button>
+      <span class="spacer"></span>
+      <span class="hint" id="hint${qi}">보기를 선택하세요</span>
+      <button class="btn" data-next disabled>${isLast?'결과 보기 →':'다음 문제 →'}</button>
+    </div>`;
+
+  card.innerHTML = `
+    <div class="q-head">
+      <div class="q-num">Q${q.n}</div>
+      <div>
+        <div class="q-tag">${q.tag}</div>
+      </div>
+    </div>
+    <div class="stem">${q.stem}</div>
+    ${pre}
+    ${fig}
+    <div class="options">${opts}</div>
+    ${expl}
+    ${nav}`;
+  quiz.appendChild(card);
+});
+
+// finish card
+const finish = document.createElement('section');
+finish.className = 'card';
+finish.id = 'finish';
+finish.innerHTML = `
+  <h2>수고하셨습니다 🎓</h2>
+  <div class="big"><span class="score-num" id="finalScore">0</span> / 5</div>
+  <p id="finishMsg"></p>
+  <p>완전경쟁(가격수용자) → 일반기업/신약 비용구조 → 독점의 높은 가격과 사중손실 → 가격차별까지, 오늘의 흐름이 완성되었습니다.</p>
+  <p>다음 시간엔 국가 간 가격차별을 연동시키는 <b>국제참조가격제(IRP)</b>로 이어집니다.</p>
+  <button class="btn restart" data-restart>처음부터 다시 →</button>
+`;
+quiz.appendChild(finish);
+
+/* ---------- Interaction ---------- */
+function show(idx){
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+  const cards = document.querySelectorAll('.card');
+  cards[idx].classList.add('active');
+  current = idx;
+  const total = QUESTIONS.length;
+  const displayNum = Math.min(idx+1, total);
+  document.getElementById('cur').textContent = idx>=total ? total : idx+1;
+  document.getElementById('pfill').style.width = (((idx)/(total))*100 + (idx>=total?0:0)) + '%';
+  document.getElementById('pfill').style.width = (((Math.min(idx+1,total))/total)*100) + '%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+quiz.addEventListener('click',(e)=>{
+  const opt = e.target.closest('.opt');
+  if(opt){
+    const qi = +opt.dataset.q;
+    const oi = +opt.dataset.o;
+    if(answered[qi]) return;
+    answered[qi]=true;
+    const q = QUESTIONS[qi];
+    const card = document.getElementById('q'+qi);
+    const opts = card.querySelectorAll('.opt');
+    opts.forEach((el,i)=>{
+      el.classList.add('locked');
+      if(i===q.answer){ el.classList.add('correct'); el.querySelector('.badge').textContent='정답'; }
+      else if(i===oi){ el.classList.add('wrong'); el.querySelector('.badge').textContent='오답'; }
+      else { el.classList.add('dim'); }
+    });
+    const correct = oi===q.answer;
+    if(correct) score++;
+    document.getElementById('exp'+qi).classList.add('show');
+    const hint = document.getElementById('hint'+qi);
+    hint.textContent = correct ? '정답입니다 ✓ — 해설을 확인하세요' : '아쉽네요 — 정답과 해설을 확인하세요';
+    hint.style.color = correct ? 'var(--good)' : 'var(--bad)';
+    card.querySelector('[data-next]').disabled = false;
+    return;
+  }
+  const next = e.target.closest('[data-next]');
+  if(next){
+    if(current < QUESTIONS.length-1){ show(current+1); }
+    else {
+      document.getElementById('finalScore').textContent = score;
+      const msg = document.getElementById('finishMsg');
+      if(score===5) msg.textContent='완벽합니다! 모든 개념을 정확히 이해하셨네요.';
+      else if(score>=3) msg.textContent='잘하셨습니다. 틀린 부분의 해설을 한 번 더 확인해 보세요.';
+      else msg.textContent='개념을 다시 짚어볼 기회예요. 해설을 천천히 복습해 봅시다.';
+      show(QUESTIONS.length);
+    }
+    return;
+  }
+  const prev = e.target.closest('[data-prev]');
+  if(prev){ if(current>0) show(current-1); return; }
+  const restart = e.target.closest('[data-restart]');
+  if(restart){
+    answered.fill(false); score=0;
+    document.querySelectorAll('.opt').forEach(el=>{
+      el.className='opt';
+      el.querySelector('.badge').textContent='';
+    });
+    document.querySelectorAll('.explain').forEach(el=>el.classList.remove('show'));
+    document.querySelectorAll('[data-next]').forEach(b=>b.disabled=true);
+    QUESTIONS.forEach((q,i)=>{
+      const h=document.getElementById('hint'+i);
+      h.textContent='보기를 선택하세요'; h.style.color='var(--muted)';
+    });
+    show(0);
+    return;
+  }
+});
+
+// keyboard navigation
+document.addEventListener('keydown',(e)=>{
+  if(current>=QUESTIONS.length) return;
+  if(e.key==='ArrowRight'){
+    const b=document.querySelector('#q'+current+' [data-next]');
+    if(b && !b.disabled) b.click();
+  }
+  if(e.key==='ArrowLeft'){
+    const b=document.querySelector('#q'+current+' [data-prev]');
+    if(b && !b.disabled) b.click();
+  }
+  if(['1','2','3','4','5'].includes(e.key)){
+    const opts=document.querySelectorAll('#q'+current+' .opt');
+    const idx=+e.key-1;
+    if(opts[idx]) opts[idx].click();
+  }
+});
+
+show(0);
+</script>
+</body>
+</html>
